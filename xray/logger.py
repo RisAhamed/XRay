@@ -33,7 +33,7 @@ class Logger:
 
     def create_logger(self):
         logging_str = "[%(asctime)s] %(lineno)d %(name)s - %(levelname)s - %(message)s"
-        logger = logging.getLogger("signlanguage_logger")
+        logger = logging.getLogger("X_RAY_logger")
         logger.setLevel(logging.INFO)
 
         file_handler = logging.FileHandler(self.log_file_path)

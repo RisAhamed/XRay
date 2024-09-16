@@ -6,3 +6,12 @@ from torch.utils.data.dataloader import DataLoader
 class DataIngestionArtifacts:
     train_file_path: str 
     test_file_path: str
+
+
+
+@dataclass
+class DataTransformationArtifacts:
+    transformed_train_object : DataLoader
+    transformed_test_object: DataLoader
+    train_transform_file_path : str
+    test_transform_file_path : str

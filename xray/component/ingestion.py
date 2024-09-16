@@ -25,17 +25,36 @@ class DataIngestion:
 
         except Exception as e:
             raise CustomException(e,sys)
+    import os
+
     def initiate_data_ingestion(self):
         logging.info("Starting data ingestion")
-        try :
+        try:
+            # Download data from S3
             self.get_data_from_s3()
-            data_ingestion_artifacts: DataIngestionArtifacts = DataIngestionArtifacts(
-                train_file_path=self.data_ingestion_config.train_data_path,
-                test_file_path=self.data_ingestion_config.test_data_path
-            ) 
+
+            # Create directories if they do not exist
+            train_dir = os.path.join(self.data_ingestion_config.data_path, 'train')
+            test_dir = os.path.join(self.data_ingestion_config.data_path, 'test')
+            
+            os.makedirs(train_dir, exist_ok=True)
+            os.makedirs(test_dir, exist_ok=True)
+
+            # Verify that directories exist
+            if not os.path.exists(train_dir):
+                raise FileNotFoundError(f"Train directory not found: {train_dir}")
+            
+            if not os.path.exists(test_dir):
+                raise FileNotFoundError(f"Test directory not found: {test_dir}")
+
+            data_ingestion_artifacts = DataIngestionArtifacts(
+                train_file_path=train_dir,
+                test_file_path=test_dir
+            )
+
             logging.info("Data ingestion artifacts completed")
 
             return data_ingestion_artifacts
-        
+
         except Exception as e:
-            raise CustomException(e,sys)
+            raise CustomException(e, sys)
