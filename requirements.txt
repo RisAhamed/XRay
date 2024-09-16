@@ -4,3 +4,6 @@ torchvision
 tqdm
 pip-chill
 wincertstore
+
+
+-e .
