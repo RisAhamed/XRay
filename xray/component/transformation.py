@@ -1,5 +1,4 @@
 from typing import Tuple
-
 import joblib,sys
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
@@ -11,11 +10,13 @@ from xray.exception import CustomException
 from xray.logger import logging
 
 
+
+
 class DataTransformation:
     def __init__(
         self,
         data_transformation_config: DataTransformationConfig,
-        data_ingestion_artifact: DataIngestionArtifacts,
+        data_ingestion_artifact: DataIngestionArtifact,
     ):
         self.data_transformation_config = data_transformation_config
 
@@ -86,22 +87,20 @@ class DataTransformation:
 
     
     def data_loader(
-    self, train_transform: transforms.Compose, test_transform: transforms.Compose
-) -> Tuple[DataLoader, DataLoader]:
+        self, train_transform: transforms.Compose, test_transform: transforms.Compose
+    ) -> Tuple[DataLoader, DataLoader]:
         try:
             logging.info("Entered the data_loader method of Data transformation class")
 
             train_data: Dataset = ImageFolder(
-                self.data_ingestion_artifact.train_file_path,  # Removed os.path.join
+                os.path.join(self.data_ingestion_artifact.train_file_path),
                 transform=train_transform,
             )
 
             test_data: Dataset = ImageFolder(
-                self.data_ingestion_artifact.test_file_path,  # Removed os.path.join
+                os.path.join(self.data_ingestion_artifact.test_file_path),
                 transform=test_transform,
             )
-
-        # ... rest of your code
 
             logging.info("Created train data and test data paths")
 
@@ -123,7 +122,7 @@ class DataTransformation:
 
 
     
-    def initiate_data_transformation(self) -> DataTransformationArtifacts:
+    def initiate_data_transformation(self) -> DataTransformationArtifact:
         try:
             logging.info(
                 "Entered the initiate_data_transformation method of Data transformation class"
@@ -136,22 +135,22 @@ class DataTransformation:
             os.makedirs(self.data_transformation_config.artifact_dir, exist_ok=True)
 
             joblib.dump(
-                train_transform, self.data_transformation_config.train_transform_file
+                train_transform, self.data_transformation_config.train_transforms_file
             )
 
             joblib.dump(
-                test_transform, self.data_transformation_config.test_transform_file
+                test_transform, self.data_transformation_config.test_transforms_file
             )
 
             train_loader, test_loader = self.data_loader(
                 train_transform=train_transform, test_transform=test_transform
             )
 
-            data_transformation_artifact: DataTransformationArtifacts = DataTransformationArtifacts(
+            data_transformation_artifact: DataTransformationArtifact = DataTransformationArtifact(
                 transformed_train_object=train_loader,
                 transformed_test_object=test_loader,
-                train_transform_file_path=self.data_transformation_config.train_transform_file,
-                test_transform_file_path=self.data_transformation_config.test_transform_file,
+                train_transform_file_path=self.data_transformation_config.train_transforms_file,
+                test_transform_file_path=self.data_transformation_config.test_transforms_file,
             )
 
             logging.info(

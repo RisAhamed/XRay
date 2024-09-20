@@ -4,13 +4,16 @@ import sys
 from xray.cloud_Storage.s3_operations import S3Operations
 from xray.entity.artifact_entity import *
 from xray.entity.config_entity import * 
+import sys
+
+
 class DataIngestion:
-    def __init__(self,data_ingestion_config: DataIngestionConfig):
-
+    def __init__(self, data_ingestion_config: DataIngestionConfig):
         self.data_ingestion_config = data_ingestion_config
-        self.s3 = S3Operations()
-    def get_data_from_s3(self):
 
+        self.s3 = S3Operations()
+
+    def get_data_from_s3(self) -> None:
         try:
             logging.info("Entered the get_data_from_s3 method of Data ingestion class")
 
@@ -22,39 +25,29 @@ class DataIngestion:
 
             logging.info("Exited the get_data_from_s3 method of Data ingestion class")
 
-
         except Exception as e:
-            raise CustomException(e,sys)
-    import os
+            raise CustomException(e, sys)
+        
+        
 
-    def initiate_data_ingestion(self):
-        logging.info("Starting data ingestion")
+    def initiate_data_ingestion(self) -> DataIngestionArtifact:
+        logging.info(
+            "Entered the initiate_data_ingestion method of Data ingestion class"
+        )
+
         try:
-            # Download data from S3
             self.get_data_from_s3()
 
-            # Create directories if they do not exist
-            train_dir = os.path.join(self.data_ingestion_config.data_path, 'train')
-            test_dir = os.path.join(self.data_ingestion_config.data_path, 'test')
-            
-            os.makedirs(train_dir, exist_ok=True)
-            os.makedirs(test_dir, exist_ok=True)
-
-            # Verify that directories exist
-            if not os.path.exists(train_dir):
-                raise FileNotFoundError(f"Train directory not found: {train_dir}")
-            
-            if not os.path.exists(test_dir):
-                raise FileNotFoundError(f"Test directory not found: {test_dir}")
-
-            data_ingestion_artifacts = DataIngestionArtifacts(
-                train_file_path=train_dir,
-                test_file_path=test_dir
+            data_ingestion_artifact: DataIngestionArtifact = DataIngestionArtifact(
+                train_file_path=self.data_ingestion_config.train_data_path,
+                test_file_path=self.data_ingestion_config.test_data_path,
             )
 
-            logging.info("Data ingestion artifacts completed")
+            logging.info(
+                "Exited the initiate_data_ingestion method of Data ingestion class"
+            )
 
-            return data_ingestion_artifacts
+            return data_ingestion_artifact
 
         except Exception as e:
             raise CustomException(e, sys)
