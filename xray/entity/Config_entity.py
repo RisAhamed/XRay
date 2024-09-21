@@ -61,3 +61,22 @@ class DataTransformationConfig:
         self.test_transforms_file: str = os.path.join(
             self.artifact_dir, TEST_TRANSFORMS_FILE
         )
+
+
+
+@dataclass
+class ModelTrainerConfig:
+    def __init__(self):
+        self.artifact_dir = os.path.join(ARTIFACT_DIR_GLOBAL,"Model-Trainer")
+        self.trained_bentoml_model_name: str ="Xray+model"
+
+        self.trained_model_path: int = os.path.join(
+            self.artifact_dir, TRAINED_MODEL_NAME
+        )
+        self.train_transforms_key : str = TRAIN_TRANSFORMS_KEY
+        self.epochs: int = EPOCH
+
+        self.optimizer_params : dict = {'lr':0.05,'momentum': 0.7}
+        self.scheduler_params: dict = {'step_size':STEP_SIZE,'gamma': GAMMA}
+        # self.criterion_params: dict = {'weight': WEIGHT}
+        self.device = DEVICE
