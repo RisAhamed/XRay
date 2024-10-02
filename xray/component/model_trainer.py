@@ -1,7 +1,6 @@
 from xray.ml.architecture import Net
 import os
 import sys
-
 import bentoml
 import joblib
 import torch

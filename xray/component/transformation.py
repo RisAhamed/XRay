@@ -10,8 +10,6 @@ from xray.exception import CustomException
 from xray.logger import logging
 
 
-
-
 class DataTransformation:
     def __init__(
         self,

@@ -1,8 +1,11 @@
 import sys
+from regex import F
 from xray.exception import CustomException
 from xray.component.ingestion import DataIngestion
 from xray.component.transformation import DataTransformation
 from xray.component.model_trainer import ModelTrainer
+from xray.component.model_pusher import ModelPusher
+from xray.component.evaluation import ModelEvaluation
 from xray.entity.config_entity import *
 from xray.entity.artifact_entity import *
 from xray.logger import logging
@@ -12,8 +15,8 @@ class TrainPipeline:
         self.data_ingestion_config = DataIngestionConfig()
         self.data_transformation_config = DataTransformationConfig()
         self.model_trainer_config = ModelTrainerConfig()
-        # self.model_evaluation_config=ModelEvaluationConfig()
-        # self.model_pusher_config = ModelPusherConfig()
+        self.model_evaluation_config=ModelEvaluationConfig()
+        self.model_pusher_config = ModelPusherConfig()
         
         
     def start_data_ingestion(self) -> DataIngestionArtifact:
@@ -79,8 +82,41 @@ class TrainPipeline:
 
             return model_trainer_artifact
 
+        
+        except Exception as e:
+                raise CustomException(e, sys)
+        
+
+    def start_model_evaluation(self,model_trainer_artifact : ModelTrainerArtifact,data_transformation_artifacts =DataTransformationArtifact)-> ModelEvaluationArtifact:
+            logging.info("Entered the start_model_evaluation method of TrainPipeline class")
+            try:
+                model_evaluation = ModelEvaluation(
+                     data_transformation_artifact=data_transformation_artifacts,
+                    model_trainer_artifact=model_trainer_artifact,
+                    model_evaluation_config=self.model_evaluation_config,
+                )
+                model_evaluation_artifact = model_evaluation.initiate_model_evaluation()
+                logging.info("Exited the start_model_evaluation method of TrainPipeline class")
+
+                return model_evaluation_artifact
+            except Exception as e:
+                 raise CustomException(e, sys)
+    
+    def start_model_pusher(self) -> ModelPusherArtifact:
+        logging.info("Entered the start_model_pusher method of TrainPipeline class")
+
+        try:
+            model_pusher = ModelPusher(model_pusher_config=self.model_pusher_config)
+
+            model_pusher_artifact = model_pusher.initiate_model_pusher()
+
+            logging.info("Exited the start_model_pusher method of TrainPipeline class")
+
+            return model_pusher_artifact
+
         except Exception as e:
             raise CustomException(e, sys)
+
     def run_pipleine(self)-> None:
         logging.info("Starting the training pipeline")
         data_ingestion_Artifacts: DataIngestionArtifact = self.start_data_ingestion()
@@ -89,6 +125,12 @@ class TrainPipeline:
         model_trainer_artifact: ModelTrainerArtifact = self.start_model_trainer(
                 data_transformation_artifact=data_transformation_Artifacts
             )
+        model_evaluation_artifacts: ModelEvaluationArtifact = self.start_model_evaluation(
+             model_trainer_artifact=model_trainer_artifact,
+             data_transformation_artifacts = data_transformation_Artifacts
+        )
+        model_pusher_artifacts: ModelPusherArtifact = self.start_model_pusher(   )
+
         logging.info('completed Triing Pipeline ')
 
 # if __name__ == "__main__":
