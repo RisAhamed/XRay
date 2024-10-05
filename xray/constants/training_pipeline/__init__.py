@@ -47,7 +47,7 @@ SHUFFLE: bool = False
 PIN_MEMORY: bool = True
 
 
-TRAINED_MODEL_DIR: str = "trained_model"
+TRAINED_MODEL_DIR: str = "model"
 
 TRAINED_MODEL_NAME: str = "model.pt"
 

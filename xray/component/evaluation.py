@@ -29,26 +29,24 @@ class ModelEvaluation:
         self.model_trainer_artifact = model_trainer_artifact
         self.model_evaluation_config = model_evaluation_config
 
-    def configuration(self)-> Tuple[DataLoader,Module,float,Optimizer]:
+    def configuration(self) -> Tuple[DataLoader, Module, float, Optimizer]:
         try:
-            logging.info(
-                "Entered the configuration method of ModelEvaluation class"
-            )
-            test_dataloader: DataLoader = (
-                self.data_transformation_artifact.transformed_test_object
-            )
-            model: Module = Net()
-            model : Module = torch.load(self.model_trainer_artifact.trained_model_path)
-
+            logging.info("Entered the configuration method of ModelEvaluation class")
+            
+            test_dataloader: DataLoader = self.data_transformation_artifact.transformed_test_object
+            
+            model: Module = Net()  # Initialize the model
+            model.load_state_dict(torch.load(self.model_trainer_artifact.trained_model_path))  # Load the state dict
+            model.eval()  # Set the model to evaluation mode
+            
             cost: Module = CrossEntropyLoss()
-
-            model.eval()
-            logging.info("Exxited from configuration in the model Evaluation")
-
-            return test_dataloader,model,cost
+            
+            logging.info("Exited from configuration in the model Evaluation")
+            
+            return test_dataloader, model, cost
         except Exception as e:
             raise CustomException(e, sys)
-        
+
 
     import torchmetrics  # Optional if you want to use metrics package for simplicity.
 
