@@ -85,56 +85,6 @@ AWS_SECRET_KEY ==
 AWS_REGION == us-east-1
 ```
 
-
-# project structure
-``` bash
-XRay/
-├── .git/
-├── .github/
-│   └── workflows/
-│       └── main.yml
-├── .vscode/
-├── artifacts/
-│   ├── 10_02_2024_19_40/
-│   └── 10_02_2024_19_44/
-├── experiments/
-├── logs/
-├── test/
-├── xray/
-│   ├── cloud_Storage/
-│   ├── component/
-│   │   ├── evaluation.py
-│   │   ├── ingestion.py
-│   │   ├── model_pusher.py
-│   │   ├── model_trainer.py
-│   │   └── transformation.py
-│   └── ml/
-│       ├── model/
-│       ├── __init__.py
-│       ├── architecture.py
-│       └── model_service.py
-├── constants/
-│   ├── training_pipeline/
-│   └── __init__.py
-├── entity/
-│   ├── artifact_entity.py
-│   ├── config_entity.py
-│   └── __init__.py
-├── xray.egg-info/
-│   ├── __init__.py
-├── app.py
-├── bento.yaml
-├── Dockerfile.txt
-├── dockerignore.txt
-├── init_setup.sh
-├── LICENSE
-├── main.py
-├── README.md
-├── requirements.txt
-├── requirements_dev.txt
-├── setup.cfg
-├── tox.ini
-```
 ## Setup Instructions
   Clone the Repository:    
 
@@ -146,7 +96,7 @@ git clone https://github.com/RisAhamed/XRay-Project.git
 ```
 
 
-  Create a Virtual Environment:  
+Create a Virtual Environment:  
 It is recommended to create a virtual environment for this project to manage dependencies. Use the following command:
 
 ``` bash
@@ -165,7 +115,7 @@ pip install -r requirements.txt
 ```
 
 Configure S3 Bucket: 
-Upload the dataset to an S3 bucket and replace the following variables in the constants[xray\constants\training_pipeline\__init__.py]:
+Upload the dataset to an S3 bucket and replace the following variables in the [constants](xray\constants\training_pipeline\__init__.py)
 
 ``` bash
 
@@ -242,4 +192,4 @@ after this copy the command from you github actions runners and paste it in the 
 ![alt text](image.png)
 
 # Note 
-For more acuracy change the Epochs in the constants file and play with the huperparameters
+For more acuracy change the Epochs in the  [constants](xray\constants\training_pipeline\__init__.py)  file and play with the hyperparameters
