@@ -169,9 +169,7 @@ class ModelTrainer:
 
     def initiate_model_trainer(self) -> ModelTrainerArtifact:
         try:
-            logging.info(
-                "Entered the initiate_model_trainer method of Model trainer class"
-            )
+            logging.info("Entered the initiate_model_trainer method of Model trainer class")
 
             model: Module = self.model.to(self.model_trainer_config.device)
 
@@ -189,19 +187,21 @@ class ModelTrainer:
                 self.train(optimizer=optimizer)
 
                 optimizer.step()
-
                 scheduler.step()
-
                 self.test()
 
-            os.makedirs(self.model_trainer_config.artifact_dir, exist_ok=True)
+            # Ensure the model directory exists
+            os.makedirs(os.path.dirname(self.model_trainer_config.trained_model_path), exist_ok=True)
 
-            torch.save(model, self.model_trainer_config.trained_model_path)
+            # Save the model
+            torch.save(model.state_dict(), self.model_trainer_config.trained_model_path)
 
+            # Load the transformations
             train_transforms_obj = joblib.load(
                 self.data_transformation_artifact.train_transform_file_path
             )
 
+            # Save the model with BentoML
             bentoml.pytorch.save_model(
                 name=self.model_trainer_config.trained_bentoml_model_name,
                 model=model,
@@ -214,9 +214,7 @@ class ModelTrainer:
                 trained_model_path=self.model_trainer_config.trained_model_path
             )
 
-            logging.info(
-                "Exited the initiate_model_trainer method of Model trainer class"
-            )
+            logging.info("Exited the initiate_model_trainer method of Model trainer class")
 
             return model_trainer_artifact
 
