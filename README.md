@@ -136,7 +136,7 @@ XRay/
 ├── tox.ini
 ```
 ## Setup Instructions
-** Clone the Repository:  ** 
+  Clone the Repository:    
 
 To start using the project, clone the repository using the following command:
 
@@ -146,7 +146,7 @@ git clone https://github.com/RisAhamed/XRay-Project.git
 ```
 
 
-** Create a Virtual Environment:** 
+  Create a Virtual Environment:  
 It is recommended to create a virtual environment for this project to manage dependencies. Use the following command:
 
 ``` bash
@@ -155,7 +155,7 @@ python -m venv venv
 source venv/bin/activate  # On Windows use: venv\Scripts\activate
 ``` 
 
-** Install Dependencies: ** 
+  Install Dependencies:   
 Install the required packages using the requirements.txt file:
 
 ``` bash
@@ -164,7 +164,7 @@ pip install -r requirements.txt
 
 ```
 
-** Configure S3 Bucket: ** 
+Configure S3 Bucket: 
 Upload the dataset to an S3 bucket and replace the following variables in the constants[xray\constants\training_pipeline\__init__.py]:
 
 ``` bash
@@ -175,7 +175,7 @@ S3_DATA_FOLDER: str = "data" ## your folder name in the bucket
 
 ```
 
-** Set AWS Credentials:    **
+  Set AWS Credentials:     
 Also, configure your AWS credentials in your local environment.
 Upload your AWS access key and secret key in the AWS CLI:
 
