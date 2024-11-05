@@ -129,7 +129,7 @@ class TrainPipeline:
              model_trainer_artifact=model_trainer_artifact,
              data_transformation_artifacts = data_transformation_Artifacts
         )
-        model_pusher_artifacts: ModelPusherArtifact = self.start_model_pusher(   )
+        # model_pusher_artifacts: ModelPusherArtifact = self.start_model_pusher(   )
 
         logging.info('completed Triing Pipeline ')
 
